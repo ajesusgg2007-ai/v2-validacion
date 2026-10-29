@@ -31,15 +31,15 @@ Al terminar sabrás:
 
 Antes de arreglar nada, comprueba qué falla. Prueba estas entradas y anota qué pasa:
 
-| Entrada | ¿Qué ocurre? |
-|---|---|
-| *(campo vacío)* | |
-| `abc` | |
-| `3.5` | |
-| `0` | |
-| `-4` | |
-| `99999999999` | |
-| `400000000` | |
+| Entrada | ¿Qué ocurre?           |Porqué
+|---|-------------------------|----|
+| *(campo vacío)* | La aplicación se cierra |Integer.parseInt("") lanza NumberFormatException
+| `abc` |                         Se cierra|No es un número
+| `3.5` |                       Se cierra  |parseInt no acepta decimales
+| `0` |                     Muestra 0 años    |Funciona, pero no tiene sentido
+| `-4` |                    Muestra -28 años     |Igual: funciona, pero no tiene sentido
+| `99999999999` |                      Se cierra   |Supera el máximo de un int y parseInt lanza excepción
+| `400000000` |                     Resultado negativo absurdo    |400.000.000 × 7 supera el máximo de int sin lanzar excepción
 
 > 💡 Cuando la app se cierre, abre el **Logcat** y busca la excepción. ¿Qué método la lanza? ¿Por qué el último caso no cierra la app pero da un resultado absurdo?
 
@@ -72,6 +72,11 @@ En `res/values/strings.xml` añade tres textos nuevos:
 ```
 
 > ❓ ¿Qué significan `%1$d` y `%2$d`? ¿En qué orden se rellenan?
+> 
+> > **Respuesta:**
+El número indica qué argumento va ahí y d significa que es un entero decimal.
+> Se rellenan en el orden en que pasas los valores a getString, el primer valor va a %1$d y el segundo a %2$d. 
+> Esta sintaxis permite reordenar los números en otros idiomas.
 
 ## Paso 5 · Restringe la entrada desde el layout
 
@@ -122,6 +127,10 @@ resultText = findViewById(R.id.result_text);
 ```
 
 > ❓ ¿Qué pasaría si dejaras `EditText ageEdit = findViewById(...)` dentro de `onCreate()`?
+> 
+> **Respuesta:**
+> creas una variable local nueva que sustituye al atributo. El atributo de la clase se quedaría en null,
+> y al usarlo en calcularEdad() la app se cerraría con NullPointerException.
 
 ## Paso 8 · Saca la lógica del botón a un método
 
@@ -157,7 +166,13 @@ Implementa el método siguiendo este orden. En cuanto algo falle, llama a `mostr
 5. **Todo correcto**: quita el error del campo (`setError(null)`), calcula `age * FACTOR_CANINO` y muestra el resultado con `tu_edad_format`.
 
 > ❓ ¿Por qué limitar la edad a 30 evita también el desbordamiento que viste en el Paso 1?
+> 
+> **Respuesta:**
+>
+con un máximo de 30, el resultado más grande es 210, muy lejos dellímite de int, así que nunca puede desbordar. Los números enorm
+es ni siquiera llegan a la multiplicación, porque el rango los rechaza.
 
+> 
 ## Paso 11 · Vuelve a probar
 
 Comprueba que **la app nunca se cierra**:
