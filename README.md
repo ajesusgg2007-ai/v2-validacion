@@ -19,7 +19,7 @@ Al terminar sabrás:
 
 ---
 
-## Paso 0 · Prepara el proyecto
+## Paso 0 · Prepara el proyect
 
 1. Haz un **fork** de este repositorio (botón *Fork*) y clona tu fork:
    ```bash
