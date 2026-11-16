@@ -146,9 +146,9 @@ Toda la lógica pasa a un método nuevo: `private void calcularEdad()`.
 
 ```java
 private void mostrarError(String mensaje) {
-    // 1. Mostrar el mensaje en el EditText (setError)
-    // 2. Poner el foco en el EditText (requestFocus)
-    // 3. Borrar el resultado anterior del TextView
+   ageEdit.setError(mensaje);   
+   ageEdit.requestFocus();      
+   resultText.setText("");
 }
 ```
 
@@ -164,6 +164,36 @@ Implementa el método siguiendo este orden. En cuanto algo falle, llama a `mostr
    getString(R.string.error_rango, EDAD_MINIMA, EDAD_MAXIMA)
    ```
 5. **Todo correcto**: quita el error del campo (`setError(null)`), calcula `age * FACTOR_CANINO` y muestra el resultado con `tu_edad_format`.
+
+private void calcularEdad() {
+String texto = ageEdit.getText().toString().trim();
+
+    // 2. ¿Vacío?
+    if (texto.isEmpty()) {
+        mostrarError(getString(R.string.error_vacio));
+        return;
+    }
+
+    // 3. Convertir a int con try/catch
+    int age;
+    try {
+        age = Integer.parseInt(texto);
+    } catch (NumberFormatException e) {
+        mostrarError(getString(R.string.error_no_numero));
+        return;
+    }
+
+    // 4. ¿En rango?
+    if (age < EDAD_MINIMA || age > EDAD_MAXIMA) {
+        mostrarError(getString(R.string.error_rango, EDAD_MINIMA, EDAD_MAXIMA));
+        return;
+    }
+
+    // 5. Todo correcto
+    ageEdit.setError(null);
+    int edadHumana = age * FACTOR_CANINO;
+    resultText.setText(getString(R.string.tu_edad_format, edadHumana));
+}
 
 > ❓ ¿Por qué limitar la edad a 30 evita también el desbordamiento que viste en el Paso 1?
 > 
