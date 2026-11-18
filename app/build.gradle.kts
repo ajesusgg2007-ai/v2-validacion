@@ -6,10 +6,13 @@ android {
     namespace = "es.davante.edadcanina"
     compileSdk {
         version = release(37)
+        buildFeatures{
+            dataBinding=true;
+        }
     }
 
     defaultConfig {
-        applicationId = "es.davante.edadcanina"
+        applicationId = "es.davante.edadcanina.mvc"
         minSdk = 24
         targetSdk = 37
         versionCode = 1

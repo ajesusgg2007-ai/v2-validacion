@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
+import es.davante.edadcanina.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,35 +20,21 @@ public class MainActivity extends AppCompatActivity {
     private EditText ageEdit;
     private TextView resultText;
 
+    private ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        // DataBindingUtil infla el layout y crea el binding en un solo paso,
+        // por eso ya no hace falta setContentView ni findViewById
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        ageEdit = findViewById(R.id.age_input);
-        resultText = findViewById(R.id.result_text);
-
-        // Declaramos variables
-        EditText ageEdit = findViewById(R.id.age_input);
-        TextView resultText = findViewById(R.id.result_text);
-        Button button1 = findViewById(R.id.btn_calc);
-
-
-        // Implementar el boton (setOnClickListener)
-        button1.setOnClickListener(view -> {
-
-            String ageString = ageEdit.getText().toString();
-            int age = Integer.parseInt(ageString);
-            int dogAge = age * 7;
-            resultText.setText(getString(R.string.tu_edad_format, dogAge));
-        });
-
-        button1.setOnClickListener(view -> calcularEdad());
+        binding.btnCalc.setOnClickListener(view -> calcularEdad());
     }
+
     private void calcularEdad() {
         // 1. Leer el texto sin espacios
-        String texto = ageEdit.getText().toString().trim();
+        String texto = binding.ageInput.getText().toString().trim();
 
         // 2. ¿Vacío?
         if (texto.isEmpty()) {
@@ -69,15 +58,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // 5. Todo correcto
-        ageEdit.setError(null);
+        binding.ageInput.setError(null);
         int edadHumana = age * FACTOR_CANINO;
-        resultText.setText(getString(R.string.tu_edad_format, edadHumana));
+        binding.resultText.setText(getString(R.string.tu_edad_format, edadHumana));
     }
 
     private void mostrarError(String mensaje) {
-        ageEdit.setError(mensaje);
-        ageEdit.requestFocus();
-        resultText.setText("");
+        binding.ageInput.setError(mensaje);
+        binding.ageInput.requestFocus();
+        binding.resultText.setText("");
     }
 
-}
+    }
+
