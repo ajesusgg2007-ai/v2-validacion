@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import es.davante.edadcanina.databinding.ActivityMainBinding;
+import modelo.EdadCaninaModelo;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,35 +33,29 @@ public class MainActivity extends AppCompatActivity {
         binding.btnCalc.setOnClickListener(view -> calcularEdad());
     }
 
+    private final EdadCaninaModelo modelo = new EdadCaninaModelo();
+
     private void calcularEdad() {
-        // 1. Leer el texto sin espacios
-        String texto = binding.ageInput.getText().toString().trim();
+      modelo.setEdadTexto(binding.ageInput.getText().toString());
 
-        // 2. ¿Vacío?
-        if (texto.isEmpty()) {
-            mostrarError(getString(R.string.error_vacio));
-            return;
-        }
+      switch (modelo.calcular()) {
+          case VACIO:
+              mostrarError(getString(R.string.error_vacio));
+              break;
+          case NO_NUMERO:
+              mostrarError(getString(R.string.error_no_numero));
+              break;
+          case FUERA_DE_RANGO:
+              mostrarError(getString(R.string.error_rango, EDAD_MINIMA, EDAD_MAXIMA));
+              break;
+          case OK:
+              binding.ageInput.setError(null);
 
-        // 3. Convertir a int con try/catch
-        int age;
-        try {
-            age = Integer.parseInt(texto);
-        } catch (NumberFormatException e) {
-            mostrarError(getString(R.string.error_no_numero));
-            return;
-        }
-
-        // 4. ¿En rango?
-        if (age < EDAD_MINIMA || age > EDAD_MAXIMA) {
-            mostrarError(getString(R.string.error_rango, EDAD_MINIMA, EDAD_MAXIMA));
-            return;
-        }
-
-        // 5. Todo correcto
-        binding.ageInput.setError(null);
-        int edadHumana = age * FACTOR_CANINO;
-        binding.resultText.setText(getString(R.string.tu_edad_format, edadHumana));
+           binding.resultText.setText(getString(R.string.tu_edad_format, modelo.getEdadHumana()));
+           break;
+          default:
+              break;
+      }
     }
 
     private void mostrarError(String mensaje) {
