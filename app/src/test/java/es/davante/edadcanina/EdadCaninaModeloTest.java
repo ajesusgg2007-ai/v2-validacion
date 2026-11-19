@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import androidx.databinding.Observable;
 
+import es.davante.edadcanina.controlador.EdadCaninaControlador;
 import es.davante.edadcanina.modelo.EdadCaninaModelo;
 import es.davante.edadcanina.modelo.Validacion;
 
@@ -72,6 +73,17 @@ public class EdadCaninaModeloTest {
         modelo.calcular();
         assertTrue(avisos[0] > 0);
     }
+
+    @Test public void limpiar() {
+        EdadCaninaModelo modelo = new EdadCaninaModelo();
+        EdadCaninaControlador controlador = new EdadCaninaControlador(modelo);
+        modelo.setEdadTexto("6");
+        controlador.calcular();
+        controlador.limpiar();
+        assertEquals("", modelo.getEdadTexto());
+        assertEquals(Validacion.SIN_CALCULAR, modelo.getValidacion());
+    }
+
 
 
 }

@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import es.davante.edadcanina.controlador.EdadCaninaControlador;
 import es.davante.edadcanina.databinding.ActivityMainBinding;
 import es.davante.edadcanina.modelo.EdadCaninaModelo;
 
@@ -30,9 +31,10 @@ public class MainActivity extends AppCompatActivity {
 
         binding.setModelo(modelo);
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setModelo(modelo);
+        binding.setControlador(new EdadCaninaControlador(modelo));
 
-        binding.btnCalc.setOnClickListener(view -> {modelo.calcular();
-        });
     }
 
     private final EdadCaninaModelo modelo = new EdadCaninaModelo();
