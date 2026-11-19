@@ -31,14 +31,7 @@ public class MainActivity extends AppCompatActivity {
         binding.setModelo(modelo);
 
 
-        binding.btnCalc.setOnClickListener(view -> {
-            switch (modelo.calcular()){
-                case VACIO:          binding.ageInput.setError(getString(R.string.error_vacio)); break;
-                case NO_NUMERO:      binding.ageInput.setError(getString(R.string.error_no_numero)); break;
-                case FUERA_DE_RANGO: binding.ageInput.setError(getString(R.string.error_rango,
-                        EdadCaninaModelo.EDAD_MINIMA, EdadCaninaModelo.EDAD_MAXIMA)); break;
-                default:             binding.ageInput.setError(null);
-            }
+        binding.btnCalc.setOnClickListener(view -> {modelo.calcular();
         });
     }
 
