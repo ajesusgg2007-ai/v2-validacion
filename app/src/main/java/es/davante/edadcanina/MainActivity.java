@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             modelo.setEdadTexto(savedInstanceState.getString(CLAVE_TEXTO, ""));
             if (savedInstanceState.getBoolean(CLAVE_CALCULADO, false)) {
-                modelo.calcular();
+                modelo.calcular();// reaparecen resultado o error
             }
         }
 

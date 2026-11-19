@@ -83,7 +83,9 @@
                 android:layout_weight="1"
                 android:layout_margin="16dp"
                 android:text="@string/btn_calc"
-                android:onClick="@{() -> controlador.calcular()}"/>
+                android:onClick="@{() -> controlador.calcular()}"
+                android:enabled="@{!modelo.edadTexto.trim().isEmpty()}"/>
+
             <Button
                 android:id="@+id/btn_limpiar"
             android:layout_width="0dp"
