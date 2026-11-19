@@ -1,16 +1,14 @@
 package es.davante.edadcanina;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import es.davante.edadcanina.databinding.ActivityMainBinding;
-import modelo.EdadCaninaModelo;
+import es.davante.edadcanina.modelo.EdadCaninaModelo;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,39 +28,22 @@ public class MainActivity extends AppCompatActivity {
         // por eso ya no hace falta setContentView ni findViewById
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        binding.btnCalc.setOnClickListener(view -> calcularEdad());
+        binding.setModelo(modelo);
+
+
+        binding.btnCalc.setOnClickListener(view -> {
+            switch (modelo.calcular()){
+                case VACIO:          binding.ageInput.setError(getString(R.string.error_vacio)); break;
+                case NO_NUMERO:      binding.ageInput.setError(getString(R.string.error_no_numero)); break;
+                case FUERA_DE_RANGO: binding.ageInput.setError(getString(R.string.error_rango,
+                        EdadCaninaModelo.EDAD_MINIMA, EdadCaninaModelo.EDAD_MAXIMA)); break;
+                default:             binding.ageInput.setError(null);
+            }
+        });
     }
 
     private final EdadCaninaModelo modelo = new EdadCaninaModelo();
 
-    private void calcularEdad() {
-      modelo.setEdadTexto(binding.ageInput.getText().toString());
-
-      switch (modelo.calcular()) {
-          case VACIO:
-              mostrarError(getString(R.string.error_vacio));
-              break;
-          case NO_NUMERO:
-              mostrarError(getString(R.string.error_no_numero));
-              break;
-          case FUERA_DE_RANGO:
-              mostrarError(getString(R.string.error_rango, EDAD_MINIMA, EDAD_MAXIMA));
-              break;
-          case OK:
-              binding.ageInput.setError(null);
-
-           binding.resultText.setText(getString(R.string.tu_edad_format, modelo.getEdadHumana()));
-           break;
-          default:
-              break;
-      }
-    }
-
-    private void mostrarError(String mensaje) {
-        binding.ageInput.setError(mensaje);
-        binding.ageInput.requestFocus();
-        binding.resultText.setText("");
-    }
 
     }
 

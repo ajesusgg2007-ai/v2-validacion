@@ -4,7 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <import type="android.view.View"/>
+        <import type="es.davante.edadcanina.modelo.Validacion"/>
+        <variable name="modelo" type="es.davante.edadcanina.modelo.EdadCaninaModelo"/>
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -44,12 +46,13 @@
             android:gravity="center" />
 
         <EditText
+            android:id="@+id/age_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:textSize="48sp"
             android:hint="@string/hint_edad"
-            android:id="@+id/age_input"
+            android:text="@={modelo.edadTexto}"
             android:inputType="number"
             android:maxLength="2"
             android:gravity="center"
@@ -61,6 +64,8 @@
             android:textSize="16sp"
             android:gravity="center"
             android:layout_marginTop="20dp"
+            android:text="@{@string/tu_edad_format(modelo.edadHumana)}"
+            android:visibility="@{modelo.validacionOk ? View.VISIBLE : View.INVISIBLE}"
             android:id="@+id/result_text" />
 
         <Button

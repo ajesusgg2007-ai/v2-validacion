@@ -5,8 +5,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import modelo.EdadCaninaModelo;
-import modelo.Validacion;
+import androidx.databinding.Observable;
+
+import es.davante.edadcanina.modelo.EdadCaninaModelo;
+import es.davante.edadcanina.modelo.Validacion;
 
 public class EdadCaninaModeloTest {
     private EdadCaninaModelo modelo;
@@ -46,20 +48,30 @@ public class EdadCaninaModeloTest {
 
     }
 
-   @Test public void seisSon42(){
+    @Test public void seisSon42(){
         modelo.setEdadTexto("6");
         assertEquals(Validacion.OK, modelo.calcular());
         assertEquals(42, modelo.getEdadHumana());
-   }
+    }
 
-   @Test public void cambiarTexto(){
+    @Test public void cambiarTexto(){
         modelo.setEdadTexto("6");
         modelo.calcular();
         modelo.setEdadTexto("7");
         assertEquals(Validacion.SIN_CALCULAR,modelo.getValidacion());
     }
 
+    @Test public void calcular_avisaCambio() {
+        final int[] avisos = {0};
+        modelo.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override public void onPropertyChanged(Observable sender, int
+                    propertyId) { avisos[0]++; }
+        });
+        modelo.setEdadTexto("6");
+        avisos[0] = 0;
+        modelo.calcular();
+        assertTrue(avisos[0] > 0);
+    }
 
 
 }
-
